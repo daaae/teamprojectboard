@@ -143,6 +143,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="@string/signup_cancel" />
 
         <Button
@@ -151,6 +152,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="@string/signup_finish" />
     </LinearLayout>
 
