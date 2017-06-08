@@ -2,67 +2,66 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="20dp"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
-    android:layout_marginTop="0dp"
+    android:paddingBottom="20dp"
     android:weightSum="1">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
         android:orientation="vertical"
         android:weightSum="1">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
             android:gravity="bottom"
-            android:text="이름" />
+            android:text="@string/signup_username"/>
 
         <EditText
             android:id="@+id/userName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
             android:ems="10"
             android:inputType="textPersonName" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
         android:orientation="vertical"
         android:weightSum="1">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
             android:gravity="bottom"
-            android:text="학번" />
+            android:text="@string/signup_usernum" />
 
         <EditText
             android:id="@+id/userNum"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
             android:ems="10"
             android:inputType="number" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
         android:orientation="vertical"
         android:weightSum="1">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
             android:gravity="bottom"
-            android:text="아이디" />
+            android:text="@string/signup_userid" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,17 +71,18 @@
 
             <EditText
                 android:id="@+id/userID"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.7"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName" />
 
             <Button
                 android:id="@+id/btn_checkID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
                 android:layout_weight="0.3"
-                android:text="중복확인" />
+                android:layout_height="wrap_content"
+                android:text="@string/signup_idcheck" />
 
         </LinearLayout>
 
@@ -91,42 +91,41 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
         android:orientation="vertical"
         android:weightSum="1">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
             android:gravity="bottom"
-            android:text="비밀번호" />
+            android:text="@string/signup_userpw" />
 
         <EditText
             android:id="@+id/userPW1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
             android:ems="10"
             android:inputType="textPassword" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
         android:orientation="vertical"
         android:weightSum="1">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
             android:gravity="bottom"
-            android:text="비밀번호 확인" />
+            android:text="@string/signup_pwcheck" />
 
         <EditText
             android:id="@+id/userPW2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword" />
@@ -134,22 +133,25 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
         android:orientation="horizontal">
 
         <Button
+            style="@android:style/ButtonBar"
             android:id="@+id/btn_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
             android:layout_weight="0.5"
-            android:text="취소하기" />
+            android:layout_height="wrap_content"
+            android:text="@string/signup_cancel" />
 
         <Button
+            style="@android:style/ButtonBar"
             android:id="@+id/btn_signup_done"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
             android:layout_weight="0.5"
-            android:text="가입하기" />
+            android:layout_height="wrap_content"
+            android:text="@string/signup_finish" />
     </LinearLayout>
 
 
