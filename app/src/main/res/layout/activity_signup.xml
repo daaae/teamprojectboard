@@ -75,13 +75,14 @@
                 android:layout_weight="0.7"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textEmailAddress" />
 
             <Button
                 android:id="@+id/btn_checkID"
                 android:layout_width="0dp"
                 android:layout_weight="0.3"
                 android:layout_height="wrap_content"
+                android:onClick="onButtonCheckIDClicked"
                 android:text="@string/signup_idcheck" />
 
         </LinearLayout>
@@ -144,6 +145,7 @@
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:onClick="onButtonCancelClicked"
             android:text="@string/signup_cancel" />
 
         <Button
@@ -153,6 +155,7 @@
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:onClick="onButtonSignupDoneClicked"
             android:text="@string/signup_finish" />
     </LinearLayout>
 
