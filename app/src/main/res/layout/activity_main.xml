@@ -8,83 +8,18 @@
     android:weightSum="1">
 
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/myrecycleView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="horizontal"
-        android:layout_weight="0.38">
+        android:layout_height="0dp"
+        android:layout_weight="0.9"/>
 
-        <TextView
-            android:id="@+id/appTitle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="팀플보드"
-            android:textAlignment="center"
-            android:textSize="50sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-
-    <LinearLayout
+    <Button
+        android:id="@+id/button2"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:orientation="vertical"
-        android:layout_weight="0.09"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"
-        >
-
-        <EditText
-            android:id="@+id/userID"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="15dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="ID"
-            android:layout_weight="0.11" />
-
-        <EditText
-            android:id="@+id/userPW"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:layout_weight="0.11"
-            android:ems="10"
-            android:hint="비밀번호"
-            android:inputType="textPassword" />
-
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.11"
-            android:text="로그인" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="73dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_signUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.11"
-            android:text="회원가입" />
-
-        <Button
-            android:id="@+id/btn_findIDPW"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.11"
-            android:text="아이디PW 찾기" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:text="@string/main_add"
+        android:onClick="onButtonAddClicked"/>
 
 
 </LinearLayout>
