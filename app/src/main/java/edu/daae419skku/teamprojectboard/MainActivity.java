@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.myrecycleView);
+        recyclerView = (RecyclerView)findViewById(R.id.myrecycleView);
 
         adapter = new ProjectsAdapter(projectList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -95,44 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class RecycleAdapter extends RecyclerView.Adapter {
-
-
-        @Override
-        public int getItemCount() {
-            return projectList.size();
-        }
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_addproject, parent, false);
-            SimpleItemViewHolder pvh = new SimpleItemViewHolder(v);
-            return pvh;
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            SimpleItemViewHolder viewHolder = (SimpleItemViewHolder) holder;
-            viewHolder.position = position;
-            Project project = projectList.get(position);
-            ((SimpleItemViewHolder) holder).title.setText(project.getProjectName());
-        }
-
-        public final class SimpleItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            TextView title;
-            public int position;
-            public SimpleItemViewHolder(View itemView) {
-                super(itemView);
-                itemView.setOnClickListener(this);
-                title = (TextView) itemView.findViewById(R.id.projectName);
-            }
-
-            @Override
-            public void onClick(View view) {
-
-            }
-        }
-    }
 
     public void onButtonAddClicked(View v) {
         Intent intent = new Intent(getApplicationContext(), AddprojectActivity.class);
