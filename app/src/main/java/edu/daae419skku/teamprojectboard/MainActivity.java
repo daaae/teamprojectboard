@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                         for (DataSnapshot data : dataSnapshot.getChildren())
                             myprojects.add(data.getKey());
 
-                        for (String key : myprojects) {
+                        for (final String key : myprojects) {
                             myRef.child("ProjectList").child(key).addListenerForSingleValueEvent(
                                     new ValueEventListener() {
                                         @Override
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                                             // Get Project value
 
                                             Project project = dataSnapshot.getValue(Project.class);
+                                            project.setKey(key);
                                             projectList.add(project);
                                             adapter.notifyDataSetChanged();
                                         }
