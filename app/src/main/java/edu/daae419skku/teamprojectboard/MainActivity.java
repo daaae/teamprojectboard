@@ -6,14 +6,14 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     ProjectsAdapter adapter;
     private RecyclerView recyclerView;
     private List<Project> projectList = new ArrayList<>();
+    private List<String> myprojects = new ArrayList<>();
     private DatabaseReference myRef;
     private FirebaseAuth firebaseAuth;
 
@@ -43,9 +44,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
-        adapter.notifyDataSetChanged();
-
     }
 
     @Override
@@ -54,25 +52,47 @@ public class MainActivity extends AppCompatActivity {
         myRef = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
 
-        myRef.child("ProjectList").addListenerForSingleValueEvent(
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String uid = user.getUid();
+
+        myRef.child("users").child(uid).child("userprojects").addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user projects value
+                        myprojects.clear();
                         projectList.clear();
+                        for (DataSnapshot data : dataSnapshot.getChildren())
+                            myprojects.add(data.getKey());
 
-                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-                            Project project = data.getValue(Project.class);
-                            projectList.add(project);
+                        for (String key : myprojects) {
+                            myRef.child("ProjectList").child(key).addListenerForSingleValueEvent(
+                                    new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            // Get Project value
+
+                                            Project project = dataSnapshot.getValue(Project.class);
+                                            projectList.add(project);
+                                            adapter.notifyDataSetChanged();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    }
+                            );
                         }
-
-                        adapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Log.w("TodoApp", "getUser:onCancelled", databaseError.toException());
+
                     }
-                });
+                }
+        );
+
     }
 
     private class RecycleAdapter extends RecyclerView.Adapter {
@@ -98,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             ((SimpleItemViewHolder) holder).title.setText(project.getProjectName());
         }
 
-        public final  class SimpleItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public final class SimpleItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             TextView title;
             public int position;
             public SimpleItemViewHolder(View itemView) {
