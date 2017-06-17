@@ -6,89 +6,66 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class AddTodoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class AddTodoActivity extends AppCompatActivity {
 
     private DatabaseReference myRef;
     private String projectKey;
+    private List memberlist;
+    private ArrayList<String> users;
 
-    TextView txtDate;
+    TextView txtDate, selection;
     private int year, month, day;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         projectKey = intent.getStringExtra("project_key");
+        users = intent.getStringArrayListExtra("memberL");
         setContentView(R.layout.activity_add_todo);
 
         // Spinner element
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        selection=(TextView)findViewById(R.id.selection);
 
         // Spinner click listener
-        spinner.setOnItemSelectedListener(this);
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-        // Spinner Drop down elements
-        myRef = FirebaseDatabase.getInstance().getReference();
-        final List<String> members = new ArrayList<>();
-        final List<String> memberlist = new ArrayList<>();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        myRef.child("ProjectList").child(projectKey).child("members").addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get user projects value
-                        members.clear();
+                Toast.makeText(AddTodoActivity.this, users.get(position), Toast.LENGTH_LONG).show();
 
-                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-                            members.add(data.getKey());
-                        }
+            }
+            public void onNothingSelected(AdapterView<?> arg0) {
 
-                        for (final String key : members) {
-                            myRef.child("users").child(key).addListenerForSingleValueEvent(
-                                    new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            // Get Project value
+            }
 
-                                            User user = dataSnapshot.getValue(User.class);
-                                            memberlist.add(user.username);
-                                            Toast.makeText(AddTodoActivity.this, user.username, Toast.LENGTH_LONG).show();
-                                        }
+        });
 
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    }
-                            );
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                }
-        );
 
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, memberlist);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, users);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -124,15 +101,4 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
     }
 
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
-
-        // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-    }
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
-    }
 }
