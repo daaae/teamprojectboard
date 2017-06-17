@@ -9,10 +9,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,13 +32,15 @@ import java.util.List;
 public class AddTodoActivity extends AppCompatActivity {
 
     private DatabaseReference myRef;
-    private String projectKey;
+    private String projectKey, person;
     private List memberlist;
-    private ArrayList<String> users;
+    private ArrayList<String> users, usersID;
+    private FirebaseAuth firebaseAuth;
 
     TextView txtDate, selection;
     private int year, month, day;
 
+    private int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,7 @@ public class AddTodoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         projectKey = intent.getStringExtra("project_key");
         users = intent.getStringArrayListExtra("memberL");
+        usersID = intent.getStringArrayListExtra("memberUid");
         setContentView(R.layout.activity_add_todo);
 
         // Spinner element
@@ -53,9 +59,7 @@ public class AddTodoActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                Toast.makeText(AddTodoActivity.this, users.get(position), Toast.LENGTH_LONG).show();
-
+                person = usersID.get(position);
             }
             public void onNothingSelected(AdapterView<?> arg0) {
 
@@ -100,5 +104,34 @@ public class AddTodoActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    public void onButtonSaveClicked(View v) {
+        //get the data to save in firebase db
+        EditText todoName = (EditText)findViewById(R.id.todoName);
+        EditText memo = (EditText)findViewById(R.id.editText_comment);
+        TextView dateFinish = (TextView)findViewById(R.id.date_finish);
+
+
+        //save it to the firebase db
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = FirebaseDatabase.getInstance().getReference();
+
+        Todo todo = new Todo();
+        todo.setTodoName(todoName.getText().toString());
+        todo.setDate(dateFinish.getText().toString());
+        todo.setPerson(person);
+        todo.setMemo(memo.getText().toString());
+
+
+        String key = myRef.child("ProjectList").child(projectKey).child("todo").push().getKey();
+        myRef.child("ProjectList").child(projectKey).child("todo").child(key).setValue(todo);
+
+        finish();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+    }
+
 
 }
+
+
+
