@@ -23,7 +23,9 @@ import java.util.List;
 
 public class KanbanActivity extends AppCompatActivity {
     public String projectKey;
-    TodosAdapter adapter0, adapter1, adapter2;
+    TodosAdapter0 adapter0;
+    TodosAdapter1 adapter1;
+    TodosAdapter2 adapter2;
     private RecyclerView recyclerView0, recyclerView1, recyclerView2;
     private List<Todo> todoList0 = new ArrayList<>();
     private List<Todo> todoList1 = new ArrayList<>();
@@ -35,7 +37,7 @@ public class KanbanActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         projectKey = intent.getStringExtra("project_key");
@@ -66,9 +68,9 @@ public class KanbanActivity extends AppCompatActivity {
         recyclerView1 = (RecyclerView)findViewById(R.id.recycler_kanban1);
         recyclerView2 = (RecyclerView)findViewById(R.id.recycler_kanban2);
 
-        adapter0 = new TodosAdapter(todoList0);
-        adapter1 = new TodosAdapter(todoList1);
-        adapter2 = new TodosAdapter(todoList2);
+        adapter0 = new TodosAdapter0(todoList0);
+        adapter1 = new TodosAdapter1(todoList1);
+        adapter2 = new TodosAdapter2(todoList2);
 
         RecyclerView.LayoutManager mLayoutManager0 = new LinearLayoutManager(getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager1 = new LinearLayoutManager(getApplicationContext());
@@ -131,6 +133,15 @@ public class KanbanActivity extends AppCompatActivity {
         );
 
         arr = memberlist.toArray(new String[memberlist.size()]);
+
+
+        host.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                onResume();
+            }
+        });
+
     }
 
     @Override
@@ -181,6 +192,7 @@ public class KanbanActivity extends AppCompatActivity {
                     }
                 }
         );
+
     }
 
     public void onButtonAddClicked(View v) {
