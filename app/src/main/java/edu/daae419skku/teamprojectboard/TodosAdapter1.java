@@ -115,7 +115,7 @@ public class TodosAdapter1 extends RecyclerView.Adapter<TodosAdapter1.MyViewHold
         holder.btn_undo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myRef.child("ProjectList").child(projectKey).child("todo").child(todoKey).child("state").setValue(1);
+                myRef.child("ProjectList").child(projectKey).child("todo").child(todoKey).child("state").setValue(0);
                 todoList.remove(position);
                 notifyDataSetChanged();
 
