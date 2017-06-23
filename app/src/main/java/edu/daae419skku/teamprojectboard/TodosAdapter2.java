@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -65,13 +68,30 @@ public class TodosAdapter2  extends RecyclerView.Adapter<TodosAdapter2.MyViewHol
     }
 
     @Override
-    public void onBindViewHolder(TodosAdapter2.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final TodosAdapter2.MyViewHolder holder, final int position) {
         final Todo todo = todoList.get(position);
+
         myRef = FirebaseDatabase.getInstance().getReference();
 
+        myRef.child("users").child(todo.getPerson()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        User user = dataSnapshot.getValue(User.class);
+                        String name = user.username;
+                        holder.leader.setText(name);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                }
+        );
         holder.title.setText(todo.getTodoName());
         holder.date.setText(todo.getDate());
-        holder.leader.setText(todo.getPerson());
 
         final String projectKey = todo.getProjectKey();
         final String todoKey = todo.getKey();
@@ -79,8 +99,9 @@ public class TodosAdapter2  extends RecyclerView.Adapter<TodosAdapter2.MyViewHol
         holder.setClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
-                Intent intent = new Intent(view.getContext(), MainActivity.class);
+                Intent intent = new Intent(view.getContext(), ShowTodoDetail.class);
                 intent.putExtra("todo_key", todo.getKey());
+                intent.putExtra("project_key", projectKey);
                 view.getContext().startActivity(intent);
             }
         });
