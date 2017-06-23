@@ -13,8 +13,13 @@ public class Todo implements Serializable {
     private String date;
     private String person;
     private String memo;
+    private int state;
+    private String key;
+    private String projectKey;
+
 
     public Todo() {
+
 
     }
 
@@ -46,6 +51,16 @@ public class Todo implements Serializable {
         this.person = person;
     }
 
+    public int getState() {return state;}
 
+    public void setState(int state) { this.state = state;}
+
+    public String getKey() {return key;}
+
+    public void setKey(String key) {this.key = key;}
+
+    public String getProjectKey() {return projectKey;}
+
+    public void setProjectKey(String projectKey) {this.projectKey = projectKey;}
 
 }

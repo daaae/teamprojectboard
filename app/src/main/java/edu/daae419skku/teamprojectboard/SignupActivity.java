@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -47,11 +48,11 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-    private void saveUserData(String uid) {
+    private void saveUserData(String uid, String regid) {
         String username = editTextName.getText().toString().trim();
         String usernum = editTextNumber.getText().toString();
 
-        User user = new User(username, usernum);
+        User user = new User(username, usernum, regid);
 
         myRef.child("users").child(uid).setValue(user);
     }
@@ -70,9 +71,10 @@ public class SignupActivity extends AppCompatActivity {
                             // save user data to database
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             String uid = user.getUid();
-                            saveUserData(uid);
+                            String regId = FirebaseInstanceId.getInstance().getToken();
+                            saveUserData(uid, regId);
                             finish();
-                            startActivity(new Intent(getApplicationContext(), KanbanActivity.class));
+                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                         }else{
                             //display some message here
                             Toast.makeText(SignupActivity.this, "Registration failed." ,Toast.LENGTH_SHORT).show();

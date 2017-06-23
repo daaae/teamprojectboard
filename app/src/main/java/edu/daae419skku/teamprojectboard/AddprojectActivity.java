@@ -70,6 +70,7 @@ public class AddprojectActivity extends AppCompatActivity implements SearchView.
                 arraylist2.add(memberNames);
                 list2.setAdapter(adapter2);
 
+
                 final String query = memberNames.getMemberNum();
                 Query findUidQuery = FirebaseDatabase.getInstance().getReference().child("users").orderByKey();
                 findUidQuery.addChildEventListener(new ChildEventListener() {
@@ -115,13 +116,10 @@ public class AddprojectActivity extends AppCompatActivity implements SearchView.
 
         // Pass result to ListViewAdapter Class
         adapter = new ListViewAdapter(this, arraylist);
-
         adapter2 = new ListViewAdapter(this, arraylist2);
 
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
-        list2.setAdapter(adapter2);
-
         // Locate the EditText in listview_main.xml
         editsearch = (SearchView) findViewById(R.id.search);
         editsearch.setOnQueryTextListener(this);
@@ -146,7 +144,6 @@ public class AddprojectActivity extends AppCompatActivity implements SearchView.
                 }
 
             }
-
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {

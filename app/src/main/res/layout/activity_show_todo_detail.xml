@@ -52,6 +52,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.2"
             android:text="재촉하기"
+
             android:layout_height="match_parent"
 
             />

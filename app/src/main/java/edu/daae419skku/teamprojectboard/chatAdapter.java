@@ -18,7 +18,6 @@ public class chatAdapter extends RecyclerView.Adapter<chatAdapter.MyViewHolder> 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView msgUser, msgText, msgTime;
-        private ItemClickListener clickListener;
 
         public MyViewHolder(View view) {
             super(view);

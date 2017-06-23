@@ -24,10 +24,10 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        /*if (firebaseAuth.getCurrentUser() != null) {
-            startActivity(new Intent(LoginActivity.this, KanbanActivity.class));
+        if (firebaseAuth.getCurrentUser() != null) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
-        }*/
+        }
 
         setContentView(R.layout.activity_login);
 
@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "failed", Toast.LENGTH_LONG).show();
                         } else {
-                            Intent intent = new Intent(LoginActivity.this, KanbanActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
                         }

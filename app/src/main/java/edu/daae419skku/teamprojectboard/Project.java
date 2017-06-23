@@ -9,10 +9,15 @@ public class Project implements Serializable {
     private String projectName;
     private String date;
     private String leader;
+    private String key;
 
     public Project() {
 
     }
+
+    public String getKey() {return key;}
+
+    public void setKey(String key) {this.key = key;}
 
     public String getDate() {
         return date;

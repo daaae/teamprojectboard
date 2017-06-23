@@ -62,10 +62,13 @@
                             android:text="@string/kanban_add"
                             android:onClick="onButtonAddClicked"/>
 
-                        <TextView
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_kanban0"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="This is tab 1" />
+                            android:layout_height="0dp"
+                            android:layout_weight="0.9"/>
+
+
 
                     </LinearLayout>
 
@@ -73,12 +76,14 @@
                         android:id="@+id/tab2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:onClick="onTabClicked"
                         android:orientation="vertical">
 
-                        <TextView
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_kanban1"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="This is tab 2" />
+                            android:layout_height="0dp"
+                            android:layout_weight="0.9"/>
 
                     </LinearLayout>
 
@@ -88,10 +93,11 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
-                        <TextView
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_kanban2"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="This is tab 3" />
+                            android:layout_height="0dp"
+                            android:layout_weight="0.9"/>
 
                     </LinearLayout>
                 </FrameLayout>

@@ -7,10 +7,18 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,8 +27,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static java.sql.DriverManager.println;
 
 public class ShowTodoDetail extends AppCompatActivity {
 
@@ -34,6 +49,9 @@ public class ShowTodoDetail extends AppCompatActivity {
     TextView name, person, txtdate, comment;
     EditText message;
     String messageUser;
+
+    String regid;
+    RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +69,14 @@ public class ShowTodoDetail extends AppCompatActivity {
         myRef = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
 
-
+        Button sendButton = (Button) findViewById(R.id.btn_push);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                send();
+            }
+        });
+        queue = Volley.newRequestQueue(getApplicationContext());
 
 
         myRef.child("ProjectList").child(projectKey).child("todo").child(todoKey).addListenerForSingleValueEvent(
@@ -123,10 +148,9 @@ public class ShowTodoDetail extends AppCompatActivity {
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             // Get Project value
                                             Chat chat = dataSnapshot.getValue(Chat.class);
-                                            if (chat != null) {
-                                                messageList.add(chat);
-                                                adapter.notifyDataSetChanged();
-                                            }
+                                            messageList.add(chat);
+                                            adapter.notifyDataSetChanged();
+
                                         }
 
                                         @Override
@@ -185,5 +209,116 @@ public class ShowTodoDetail extends AppCompatActivity {
 
     }
 
+    public void send() {
+        myRef.child("ProjectList").child(projectKey).child("todo").child(todoKey).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        Todo todo = dataSnapshot.getValue(Todo.class);
+
+                        myRef.child("users").child(todo.getPerson()).addListenerForSingleValueEvent(
+                                new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        User user = dataSnapshot.getValue(User.class);
+                                        regid = user.userreg;
+
+                                        JSONObject requestData = new JSONObject();
+                                        try {
+                                            requestData.put("priority", "high");
+                                            JSONObject dataObj = new JSONObject();
+                                            dataObj.put("contents", "재촉 알림이 왔습니다.");
+                                            requestData.put("data", dataObj);
+
+                                            JSONArray idArray = new JSONArray();
+                                            idArray.put(0, regid);
+                                            requestData.put("registration_ids", idArray);
+                                        } catch (Exception e) {
+                                        }
+
+                                        sendData(requestData, new SendResponseListener() {
+                                            @Override
+                                            public void onRequestCompleted() {
+                                                println("호출");
+                                            }
+                                            @Override
+                                            public void onRequestStarted() {
+                                                println("호출");
+                                            }
+                                            @Override
+                                            public void onRequestWithError(VolleyError error) {
+                                                println("호출");
+                                            }
+                                        });
+
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                }
+                        );
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                }
+        );
+    }
+
+
+    public interface SendResponseListener {
+        public void onRequestStarted();
+        public void onRequestCompleted();
+        public void onRequestWithError(VolleyError error);
+
+    }
+
+    public void sendData(JSONObject requestData, final SendResponseListener listener) {
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST,
+                "https://fcm.googleapis.com/fcm/send",
+                requestData,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        listener.onRequestCompleted();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        listener.onRequestWithError(error);
+                    }
+            }
+        ) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String,String>();
+
+                return params;
+            }
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                Map<String,String> headers = new HashMap<String, String>();
+                headers.put("Authorization","key=0000000000000000000000");
+                return headers;
+            }
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+
+        request.setShouldCache(false);
+        listener.onRequestStarted();
+        queue.add(request);
+    }
 
 }

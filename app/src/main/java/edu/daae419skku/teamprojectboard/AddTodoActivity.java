@@ -59,7 +59,10 @@ public class AddTodoActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                person = usersID.get(position);
+                if (position != 0)
+                    person = usersID.get(position-1);
+                else
+                    person = "";
             }
             public void onNothingSelected(AdapterView<?> arg0) {
 
@@ -120,18 +123,21 @@ public class AddTodoActivity extends AppCompatActivity {
         todo.setDate(dateFinish.getText().toString());
         todo.setPerson(person);
         todo.setMemo(memo.getText().toString());
+        todo.setState(0);
+        todo.setProjectKey(projectKey);
 
 
         String key = myRef.child("ProjectList").child(projectKey).child("todo").push().getKey();
+        todo.setKey(key);
+
         myRef.child("ProjectList").child(projectKey).child("todo").child(key).setValue(todo);
+        //myRef.child("ProjectList").child(projectKey).child("todo").child(key).child("chats").push();
+
+
+
 
         finish();
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
     }
-
-
 }
-
-
-

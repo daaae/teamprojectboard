@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         recyclerView = (RecyclerView)findViewById(R.id.myrecycleView);
 
@@ -55,11 +58,17 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String uid = user.getUid();
 
+
+        String regId = FirebaseInstanceId.getInstance().getToken();
+        myRef.child("users").child(uid).child("userreg").setValue(regId);
+
         myRef.child("users").child(uid).child("userprojects").addListenerForSingleValueEvent(
+
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get user projects value
+
                         myprojects.clear();
                         projectList.clear();
                         for (DataSnapshot data : dataSnapshot.getChildren())
@@ -100,6 +109,22 @@ public class MainActivity extends AppCompatActivity {
     public void onButtonAddClicked(View v) {
         Intent intent = new Intent(getApplicationContext(), AddprojectActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (intent != null) {
+            processIntent(intent);
+        }
+        super.onNewIntent(intent);
+    }
+
+    private void processIntent(Intent intent) {
+        String from = intent.getStringExtra("from");
+        if (from == null) {
+            return;
+        }
+        String contents = intent.getStringExtra("contents");
     }
 
 
