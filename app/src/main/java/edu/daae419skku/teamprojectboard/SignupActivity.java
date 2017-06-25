@@ -12,9 +12,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 public class SignupActivity extends AppCompatActivity {
@@ -25,10 +29,7 @@ public class SignupActivity extends AppCompatActivity {
     private DatabaseReference myRef;
 
     //define view objects
-    private EditText editTextEmail;
-    private EditText editTextPassword;
-    private EditText editTextName;
-    private EditText editTextNumber;
+    private EditText editTextEmail, editTextPassword, editTextPassword1, editTextName, editTextNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class SignupActivity extends AppCompatActivity {
         //initialize views
         editTextEmail = (EditText) findViewById(R.id.userID);
         editTextPassword = (EditText) findViewById(R.id.userPW1);
+        editTextPassword1 = (EditText) findViewById(R.id.userPW);
         editTextName = (EditText) findViewById(R.id.userName);
         editTextNumber = (EditText) findViewById(R.id.userNum);
 
@@ -77,13 +79,14 @@ public class SignupActivity extends AppCompatActivity {
                             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                         }else{
                             //display some message here
-                            Toast.makeText(SignupActivity.this, "Registration failed." ,Toast.LENGTH_SHORT).show();
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                Toast.makeText(SignupActivity.this, "이미 존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                                Toast.makeText(SignupActivity.this, "회원 가입에 실패했습니다." ,Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-    }
-    public void onButtonCheckIDClicked(View v) {
-
     }
 
     public void onButtonCancelClicked(View v) {
