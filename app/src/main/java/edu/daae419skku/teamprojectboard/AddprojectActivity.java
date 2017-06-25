@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,7 +25,7 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.StringTokenizer;
+
 
 public class AddprojectActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -67,6 +66,8 @@ public class AddprojectActivity extends AppCompatActivity implements SearchView.
                 String data = textview.getText().toString();
 
                 MemberNames memberNames = new MemberNames(data);
+                if (arraylist2.contains(memberNames))
+                    return;
                 arraylist2.add(memberNames);
                 list2.setAdapter(adapter2);
 
@@ -128,7 +129,7 @@ public class AddprojectActivity extends AppCompatActivity implements SearchView.
 
     @Override
     public boolean onQueryTextSubmit(final String query) {
-        // email이 submit 되면 retrieve uid from database
+        // 학번이 submit 되면 retrieve uid from database
         Query findUidQuery = FirebaseDatabase.getInstance().getReference().child("users").orderByKey();
         findUidQuery.addChildEventListener(new ChildEventListener() {
             @Override
@@ -216,6 +217,7 @@ public class AddprojectActivity extends AppCompatActivity implements SearchView.
 
         myRef.child("ProjectList").child(key).setValue(project);
         myRef.child("users").child(uid).child("userprojects").child(key).setValue(true);
+        myRef.child("ProjectList").child(key).child("members").child(uid).setValue(true);
 
         for (String memberUid : memberUids) {
             myRef.child("users").child(memberUid).child("userprojects").child(key).setValue(true);
@@ -226,13 +228,6 @@ public class AddprojectActivity extends AppCompatActivity implements SearchView.
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
     }
-
-    public void onButtonListviewClicked(View v) {
-
-    }
-
-
-
 
 
 
