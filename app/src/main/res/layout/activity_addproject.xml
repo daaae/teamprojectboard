@@ -23,7 +23,8 @@
             android:paddingRight="15dp"
             android:ems="10"
             android:inputType="text"
-            android:hint="@string/add_projectname" />
+            android:hint="@string/add_projectname"
+            />
 
     </LinearLayout>
 
@@ -45,7 +46,9 @@
             android:id="@+id/date_finish"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:ems="10"
+            android:padding="10dp"
+            android:ems="15"
+            android:textAlignment="center"
             android:text="@string/date_selected" />
 
     </LinearLayout>
@@ -54,8 +57,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.4"
-        android:weightSum="1"
+        android:layout_weight="0.3"
         android:orientation="vertical"
         >
 
@@ -63,7 +65,8 @@
             android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:iconifiedByDefault="false">
+            android:iconifiedByDefault="false"
+            android:queryHint="팀원 검색">
 
         </SearchView>
 
@@ -78,7 +81,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="선택한 팀원"/>
 
         <ListView
             android:id="@+id/listview2"
@@ -86,14 +96,13 @@
             android:layout_height="wrap_content">
         </ListView>
 
-        >
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="0.1">
 
         <Button
             android:id="@+id/btn_save"

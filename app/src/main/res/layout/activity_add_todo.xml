@@ -45,7 +45,9 @@
             android:id="@+id/date_finish"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:ems="10"
+            android:padding="10dp"
+            android:ems="15"
+            android:textAlignment="center"
             android:text="@string/date_selected" />
 
     </LinearLayout>
@@ -83,6 +85,7 @@
             android:id="@+id/editText_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="간단한 설명"
         />
     </LinearLayout>
 
