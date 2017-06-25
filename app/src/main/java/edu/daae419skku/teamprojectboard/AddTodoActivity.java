@@ -137,7 +137,8 @@ public class AddTodoActivity extends AppCompatActivity {
 
 
         finish();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
+        Intent intent = new Intent(getApplicationContext(), KanbanActivity.class);
+        intent.putExtra("project_key", projectKey);
+        startActivity(intent);
     }
 }
